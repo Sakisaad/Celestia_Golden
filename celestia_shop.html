@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | Celestia Golden</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0f0505 100%);
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Ember particles floating */
+        .embers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .ember {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #ff6b35 0%, #f7931e 50%, transparent 100%);
+            border-radius: 50%;
+            animation: float linear infinite;
+            box-shadow: 0 0 10px #ff6b35;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        nav a {
+            color: #f5f5f5;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .shop-hero {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 4rem 5% 2rem;
+        }
+
+        .shop-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: normal;
+            letter-spacing: 3px;
+        }
+
+        .shop-hero p {
+            color: #b8b8b8;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .filter-tabs {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem 5%;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            color: #b8b8b8;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: #ff6b35;
+            color: #ff6b35;
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .products-grid {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            border-color: #ff6b35;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff6b35;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .product-card:hover .product-image::before {
+            left: 100%;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            color: #ff6b35;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #f5f5f5;
+        }
+
+        .product-description {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #ff6b35 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            color: #0a0a0a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .coming-soon {
+            opacity: 0.6;
+        }
+
+        .coming-soon-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 107, 53, 0.9);
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            z-index: 5;
+        }
+
+        footer {
+            position: relative;
+            z-index: 10;
+            padding: 3rem 5% 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 107, 53, 0.3);
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .shop-hero h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav a {
+                margin-left: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="embers" id="embers"></div>
+
+    <header>
+        <div class="logo">CELESTIA</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#apparel">Apparel</a>
+            <a href="#digital">Digital</a>
+            <a href="#services">Services</a>
+        </nav>
+    </header>
+
+    <section class="shop-hero">
+        <h1>THE EMBER COLLECTION</h1>
+        <p>Wear the chaos. Own the transformation.</p>
+    </section>
+
+    <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All Products</button>
+        <button class="filter-btn" data-filter="apparel">Apparel</button>
+        <button class="filter-btn" data-filter="digital">Digital Products</button>
+        <button class="filter-btn" data-filter="services">Services</button>
+    </div>
+
+    <div class="products-grid">
+        <!-- Product 1 -->
+        <div class="product-card" data-category="apparel">
+            <div class="product-image">
+                <div style="text-align: center; line-height: 1.3;">
+                    CELESTIA<br>
+                    <span style="font-size: 1.2rem; color: #d4af37;">IS THE BEST</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Apparel</div>
+                <h3 class="product-title">Statement Tee - "Celestia Is The Best"</h3>
+                <p class="product-description">Bold typography on premium black cotton. Because sometimes you just need to say it.</p>
+                <div class="product-footer">
+                    <span class="product-price">$32</span>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-category="apparel">
+            <div class="product-image">
+                <div style="text-align: center; line-height: 1.4; font-size: 2rem;">
+                    FOLLOW ME<br>
+                    <span style="font-size: 1.5rem; color: #f7931e;">FOR MORE</span><br>
+                    <span style="font-size: 1rem; color: #888;">@celestia_golden</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Apparel</div>
+                <h3 class="product-title">Influencer Tee - "Follow Me For More"</h3>
+                <p class="product-description">The shirt that says what we're all thinking. Soft cotton, hard truths.</p>
+                <div class="product-footer">
+                    <span class="product-price">$32</span>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-category="apparel">
+            <div class="product-image" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 100%);">
+                <div style="text-align: center; line-height: 1.3; font-size: 3rem; letter-spacing: 3px;">
+                    C_G
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Apparel</div>
+                <h3 class="product-title">Logo Hoodie - "C_G Ember Edition"</h3>
+                <p class="product-description">Premium heavyweight hoodie with embroidered Celestia_Golden logo. Comfort meets fire.</p>
+                <div class="product-footer">
+                    <span class="product-price">$58</span>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card" data-category="apparel">
+            <div class="product-image">
+                <div style="text-align: center; line-height: 1.4; font-size: 2.2rem; font-style: italic;">
+                    GOLDEN<br>
+                    <span style="font-size: 3rem; color: #ff6b35;">EXILE</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Apparel</div>
+                <h3 class="product-title">Golden Exile Tee</h3>
+                <p class="product-description">Day 47 in Austin. The mission continues. Wear the journey.</p>
+                <div class="product-footer">
+                    <span class="product-price">$35</span>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-card" data-category="apparel">
+            <div class="product-image" style="background: #0a0a0a;">
+                <div style="text-align: center; line-height: 1.3; font-size: 2rem; color: #ff6b35; font-weight: normal;">
+                    THE WEAPON<br>
+                    <span style="font-size: 1.2rem; color: #888;">questioning its target</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Apparel</div>
+                <h3 class="product-title">Black Tote - "The Weapon"</h3>
+                <p class="product-description">Heavy duty canvas. Perfect for carrying your contradictions.</p>
+                <div class="product-footer">
+                    <span class="product-price">$28</span>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-card" data-category="apparel">
+            <div class="product-image">
+                <div style="text-align: center; line-height: 1.2; font-size: 1.8rem;">
+                    TRANSPARENT<br>
+                    <span style="font-size: 2.5rem; color: #f7931e;">CHAOS</span><br>
+                    <span style="font-size: 1.2rem; color: #d4af37;">SINCE 2024</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Apparel</div>
+                <h3 class="product-title">Crewneck - "Transparent Chaos"</h3>
+                <p class="product-description">Soft fleece interior. Because chaos deserves comfort too.</p>
+                <div class="product-footer">
+                    <span class="product-price">$52</span>
+                    <button class="buy-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product-card" data-category="digital">
+            <div class="product-image" style="background: radial-gradient(circle, #1a0a0a 0%, #0a0a0a 100%);">
+                <div style="text-align: center; font-size: 4rem;">📱</div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Digital Product</div>
+                <h3 class="product-title">Social Media Strategy Guide</h3>
+                <p class="product-description">10 years of industry secrets. From GMA to independent creator. The playbook that actually works.</p>
+                <div class="product-footer">
+                    <span class="product-price">$97</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product-card" data-category="digital">
+            <div class="product-image" style="background: radial-gradient(circle, #1a0505 0%, #0a0a0a 100%);">
+                <div style="text-align: center; font-size: 4rem;">🎬</div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Digital Product</div>
+                <h3 class="product-title">Content Creator Toolkit</h3>
+                <p class="product-description">Templates, scripts, and systems. Everything I use to build content that refuses to be ignored.</p>
+                <div class="product-footer">
+                    <span class="product-price">$67</span>
+                    <button class="buy-btn">Buy Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product-card coming-soon" data-category="digital">
+            <div class="coming-soon-badge">COMING SOON</div>
+            <div class="product-image" style="background: radial-gradient(circle, #0f0505 0%, #0a0a0a 100%);">
+                <div style="text-align: center; font-size: 4rem;">📖</div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Digital Product</div>
+                <h3 class="product-title">The Exile Diaries</h3>
+                <p class="product-description">Exclusive weekly updates from Austin. Behind the scenes of the transformation. Subscribers only.</p>
+                <div class="product-footer">
+                    <span class="product-price">$15/mo</span>
+                    <button class="buy-btn">Notify Me</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product-card" data-category="services">
+            <div class="product-image" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);">
+                <div style="text-align: center; font-size: 3rem; line-height: 1.3;">
+                    1:1<br>
+                    <span style="font-size: 1.5rem; color: #ff6b35;">STRATEGY</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Service</div>
+                <h3 class="product-title">Brand Strategy Session</h3>
+                <p class="product-description">90-minute deep dive. Your brand, your story, your next move. No BS, just strategy that works.</p>
+                <div class="product-footer">
+                    <span class="product-price">$297</span>
+                    <button class="buy-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 11 -->
+        <div class="product-card" data-category="services">
+            <div class="product-image" style="background: linear-gradient(135deg, #1a0505 0%, #0a0a0a 100%);">
+                <div style="text-align: center; font-size: 2.5rem; line-height: 1.3;">
+                    CONTENT<br>
+                    <span style="font-size: 1.8rem; color: #f7931e;">AUDIT</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Service</div>
+                <h3 class="product-title">Social Media Audit</h3>
+                <p class="product-description">Comprehensive review of your entire presence. What's working, what's dying, what needs to burn.</p>
+                <div class="product-footer">
+                    <span class="product-price">$497</span>
+                    <button class="buy-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 12 -->
+        <div class="product-card coming-soon" data-category="services">
+            <div class="coming-soon-badge">LIMITED SPOTS</div>
+            <div class="product-image" style="background: radial-gradient(circle, #1a0a0a 0%, #0a0a0a 100%);">
+                <div style="text-align: center; font-size: 2rem; line-height: 1.4;">
+                    MONTHLY<br>
+                    <span style="font-size: 2.8rem; color: #d4af37;">RETAINER</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-category">Service</div>
+                <h3 class="product-title">Full Strategy Retainer</h3>
+                <p class="product-description">Ongoing strategy, content planning, and brand development. For creators ready to go all in.</p>
+                <div class="product-footer">
+                    <span class="product-price">$2.5K/mo</span>
+                    <button class="buy-btn">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Celestia Golden. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://instagram.com/celestia_golden" target="_blank">Instagram</a>
+            <a href="https://tiktok.com/@celestia_golden" target="_blank">TikTok</a>
+            <a href="https://twitter.com/celestia_golden" target="_blank">Twitter</a>
+            <a href="mailto:celestiagolden6@gmail.com">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // Create ember particles
+        const embersContainer = document.getElementById('embers');
+        for (let i = 0; i < 40; i++) {
+            const ember = document.createElement('div');
+            ember.className = 'ember';
+            ember.style.left = Math.random() * 100 + '%';
+            ember.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            ember.style.animationDelay = Math.random() * 5 + 's';
+            embersContainer.appendChild(ember);
+        }
+
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                productCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Simple add to cart alert (you'll replace this with real e-commerce later)
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const productName = btn.closest('.product-card').querySelector('.product-title').textContent;
+                alert(`"${productName}" added to cart! (E-commerce integration coming soon)`);
+            });
+        });
+    </script>
+</body>
+</html>
