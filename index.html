@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestia Golden | Media Strategist & Content Creator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+        }
+
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, #d4af37);
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d4af37;
+            letter-spacing: 2px;
+        }
+
+        nav a {
+            color: #f5f5f5;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: #d4af37;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 10;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 5%;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #d4af37 0%, #f4e4c1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: normal;
+            letter-spacing: 3px;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #b8b8b8;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: #d4af37;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .email-form input {
+            background: transparent;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            color: #f5f5f5;
+            font-size: 1rem;
+            outline: none;
+            width: 300px;
+        }
+
+        .email-form input::placeholder {
+            color: #888;
+        }
+
+        .email-form button {
+            background: linear-gradient(135deg, #d4af37 0%, #c9a961 100%);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-size: 1rem;
+        }
+
+        .email-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .shop-btn {
+            background: transparent;
+            border: 2px solid #d4af37;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            color: #d4af37;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .shop-btn:hover {
+            background: #d4af37;
+            color: #1a1a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .counter {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #888;
+            letter-spacing: 2px;
+        }
+
+        .counter span {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .services {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .services h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #d4af37;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .service-card h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: normal;
+        }
+
+        .service-card p {
+            color: #b8b8b8;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #f4e4c1;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .email-form {
+                flex-direction: column;
+                border-radius: 10px;
+            }
+
+            .email-form input {
+                width: 100%;
+            }
+
+            .cta-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav a {
+                margin-left: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="rain" id="rain"></div>
+
+    <header>
+        <div class="logo">CELESTIA</div>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="shop.html">Shop</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>GOLDEN EXILE</h1>
+        <p class="subtitle">Media Strategist | Content Creator | Professional Chaos</p>
+        <p class="tagline">
+            Building brands that break through. Creating content that refuses to be ignored. 
+            Currently in Austin, questioning everything.
+        </p>
+        
+        <div class="cta-container">
+            <form class="email-form" action="https://formspree.io/f/celestiagolden6@gmail.com" method="POST">
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Join the Story</button>
+            </form>
+            <a href="shop.html" class="shop-btn">Explore Shop</a>
+        </div>
+
+        <div class="counter">
+            DAY <span id="dayCounter">47</span> IN AUSTIN
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2>What I Do</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Social Media Strategy</h3>
+                <p>10+ years building audiences that actually care. From Good Morning America to independent creators. I know what makes people stop scrolling.</p>
+            </div>
+            <div class="service-card">
+                <h3>Content Production</h3>
+                <p>Producer-level execution meets creator authenticity. I've worked both sides. I know the game and when to break the rules.</p>
+            </div>
+            <div class="service-card">
+                <h3>Brand Narrative</h3>
+                <p>Your story matters more than your product. I help you find the truth worth telling—even when it's uncomfortable.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Celestia Golden. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://instagram.com/celestia_golden" target="_blank">Instagram</a>
+            <a href="https://tiktok.com/@celestia_golden" target="_blank">TikTok</a>
+            <a href="https://twitter.com/celestia_golden" target="_blank">Twitter</a>
+            <a href="mailto:celestiagolden6@gmail.com">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // Create rain drops
+        const rainContainer = document.getElementById('rain');
+        for (let i = 0; i < 50; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.style.left = Math.random() * 100 + '%';
+            drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            rainContainer.appendChild(drop);
+        }
+
+        // Day counter (you can change the start date)
+        const startDate = new Date('2024-10-15'); // Adjust this to match your story timeline
+        const today = new Date();
+        const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        document.getElementById('dayCounter').textContent = daysDiff > 0 ? daysDiff : 1;
+    </script>
+</body>
+</html>
